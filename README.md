@@ -11,7 +11,7 @@ Please follow the osxc installation instructions...
 Or **if you know what you're doing**:
 
 ```shell
-curl -L "https://raw.githubusercontent.com/osxc/xc-boot/master/boot.sh" | sh github.com/{username}/xc-custom
+curl -L "https://raw.githubusercontent.com/osxc/xc-boot/master/boot.sh" | bash -s "github.com/{username}/xc-custom"
 ```
 
 Licence

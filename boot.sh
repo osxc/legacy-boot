@@ -3,7 +3,7 @@ REPO_DIR=~/src
 CM_REMOTE=github.com/osxc/xc-common
 CM_REPO=$REPO_DIR/$RL_REMOTE
 
-CS_REMOTE=$0
+CS_REMOTE=$1
 CS_REPO=$REPO_DIR/$CS_REMOTE
 
 echo "osxc bootstrap script"

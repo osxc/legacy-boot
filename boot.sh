@@ -53,7 +53,6 @@ echo "------------------"
 mkdir -p $CS_REPO
 rm -rf $CS_REPO
 git clone https://$CS_REMOTE.git $CS_REPO
-ln -s $CM_REPO/roles/common $CS_REPO/roles/common
 echo ""
 echo ""
 

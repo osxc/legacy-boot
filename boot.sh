@@ -35,7 +35,7 @@ if [ ! -f "/usr/local/bin/ansible" ]; then
   export CFLAGS=-Qunused-arguments
   export CPPFLAGS=-Qunused-arguments
   sudo -E easy_install pip
-  sudo -E pip install ansible
+  sudo -E pip install git+https://github.com/ansible/ansible.git # We need at least ansible 1.6
   echo ""
   echo ""
 fi

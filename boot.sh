@@ -18,7 +18,7 @@ echo " * Custom Installation Path: $CS_REPO"
 echo ""
 echo ""
 
-if [ -f "/Library/Developer/CommandLineTools/usr/bin/clang" ]; then
+if [ ! -f "/Library/Developer/CommandLineTools/usr/bin/clang" ]; then
   echo "XCode Tools Installation"
   echo "------------------------"
   echo ""
@@ -29,7 +29,7 @@ if [ -f "/Library/Developer/CommandLineTools/usr/bin/clang" ]; then
   echo ""
 fi
 
-if [ -f "/usr/local/bin/ansible" ]; then
+if [ ! -f "/usr/local/bin/ansible" ]; then
   echo "Ansible installation"
   echo "--------------------"
   export CFLAGS=-Qunused-arguments

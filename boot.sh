@@ -42,12 +42,16 @@ fi
 
 echo "Common tools clone"
 echo "------------------"
+mkdir -p $CM_REPO
+rm -rf $CM_REPO
 git clone https://$CM_REMOTE.git $CM_REPO
 echo ""
 echo ""
 
 echo "Custom tools clone"
 echo "------------------"
+mkdir -p $CS_REPO
+rm -rf $CS_REPO
 git clone https://$CS_REMOTE.git $CS_REPO
 ln -s $CM_REPO/roles/common $CS_REPO/roles/common
 echo ""
@@ -59,3 +63,5 @@ echo "You bootstrapped osxc ! "
 echo "Now it's time to launch some osxc configuration with: "
 echo ""
 echo "    TODO: real CLI tools :) ! "
+echo ""
+echo ""

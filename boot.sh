@@ -1,10 +1,13 @@
-REPO_DIR=~/src
+REPO_DIR="${HOME}/src"
 
-CM_REMOTE=github.com/osxc/xc-common
+CM_REMOTE="github.com/osxc/xc-common"
 CM_REPO=$REPO_DIR/$CM_REMOTE
 
 CS_REMOTE=${1:-github.com/osxc/xc-custom}
 CS_REPO=$REPO_DIR/$CS_REMOTE
+
+ANSIBLE_BINARY="/usr/local/bin/ansible"
+ANSIBLE_MINIMUM_VERSION="1.6"
 
 echo "osxc bootstrap script"
 echo "====================="
@@ -29,7 +32,19 @@ if [ ! -f "/Library/Developer/CommandLineTools/usr/bin/clang" ]; then
   echo ""
 fi
 
-if [ ! -f "/usr/local/bin/ansible" ]; then
+if [ ! -f "${ANSIBLE_BINARY}" ]; then
+  should_install_ansible=true
+else
+  ansible_correct_version_installed=`${ANSIBLE_BINARY} --version 2>&1 | cut -c 9- | grep "${ANSIBLE_MINIMUM_VERSION}"`
+
+  if [ "${ansible_correct_version_installed}" ]; then
+    should_install_ansible=false
+  else
+    should_install_ansible=true
+  fi
+fi
+
+if [ "${should_install_ansible}" == true ]; then
   echo "Ansible installation"
   echo "--------------------"
   export CFLAGS=-Qunused-arguments

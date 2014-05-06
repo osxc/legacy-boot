@@ -19,6 +19,8 @@ echo " * Common Path: $CM_REPO"
 echo " * Custom Installation Remote: $CS_REMOTE"
 echo " * Custom Installation Path: $CS_REPO"
 echo ""
+read -p "Continue ? [Enter]"
+echo ""
 echo ""
 
 if [ ! -f "/Library/Developer/CommandLineTools/usr/bin/clang" ]; then

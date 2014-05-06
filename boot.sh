@@ -1,10 +1,12 @@
-REPO_DIR=~/src
+if [ -z "${OSXC_REPO_DIR}" ]; then
+    OSXC_REPO_DIR=$(cd "$(dirname "$0")/../../.."; pwd)
+fi
 
 CM_REMOTE=github.com/osxc/xc-common
-CM_REPO=$REPO_DIR/$CM_REMOTE
+CM_REPO=$OSXC_REPO_DIR/$CM_REMOTE
 
 CS_REMOTE=${1:-github.com/osxc/xc-custom}
-CS_REPO=$REPO_DIR/$CS_REMOTE
+CS_REPO=$OSXC_REPO_DIR/$CS_REMOTE
 
 echo "osxc bootstrap script"
 echo "====================="

@@ -1,3 +1,5 @@
+#!/bin/bash
+# set -x
 REPO_DIR="${HOME}/src"
 
 CM_REMOTE="github.com/osxc/xc-common"
@@ -23,6 +25,9 @@ read -p "Continue ? [Enter]"
 echo ""
 echo ""
 
+declare -xi IN_ADMIN="$(/usr/bin/dscl /Search read /Groups/admin GroupMembership | /usr/bin/grep -c $USER)"
+[ "$IN_ADMIN" != 1 ] &&    printf "%s\n" "This script requires admin access, you're logged in as $USER!" && exit 1
+
 # Check OS to provide correct method/URL for CLI Tools installation
 declare -x OSX_VERS=$(sw_vers -productVersion | awk -F "." '{print $2}')
 
@@ -36,7 +41,7 @@ installDevTools(){
         PRODID=$(/usr/sbin/softwareupdate -l | awk '/Developer/{print x};{x=$0}' | awk '{print $2}')
         # install it (amazingly, it won't find the update if we put the update ID in double-quotes)
         /usr/sbin/softwareupdate -i $PRODID -v
-    # on 10.7/10.8, we instead download from public download URLs, which can be found in
+    # on 10.7/10.8, we'd instead download from public download URLs, which can be found in
     # the dvtdownloadableindex:
     # https://devimages.apple.com.edgekey.net/downloads/xcode/simulators/index-3905972D-B609-49CE-8D06-51ADC78E07BC.dvtdownloadableindex
     else
@@ -50,7 +55,6 @@ installDevTools(){
         /usr/bin/hdiutil detach "$TMPMOUNT"
         /bin/rm -rf "$TMPMOUNT"
         /bin/rm "$TOOLSPATH"
-        exit
     fi
 }
 # Build array of most probable receipts from CLI tools for current & past OS versions, partially from
@@ -64,7 +68,7 @@ declare -xi XCODE_CLI=0
 for id in ${BUNDLE_IDS[@]}; do
     /usr/sbin/pkgutil --pkg-info=$id > /dev/null 2>&1
     if [[ $? == 0 ]]; then
-        echo "Found " $id ", Xcode Developer CLI Tools install not needed"
+        echo "Found "$id", Xcode Developer CLI Tools install not needed"
         echo ""
         echo ""
         ((XCODE_CLI++))
@@ -76,8 +80,11 @@ if [[ $XCODE_CLI -ne 1 ]]; then
     echo "XCode Tools Installation"
     echo "------------------------"
     echo ""
-    echo "Please wait while Xcode is silently installed"
+    echo "Please wait while Xcode is installed"
     installDevTools
+    if [[ $? -ne 0 ]]; then
+        echo "Xcode installation failed" && exit 1
+    fi
     echo ""
     echo ""
 fi
@@ -85,7 +92,7 @@ fi
 if [ ! -f "${ANSIBLE_BINARY}" ]; then
   should_install_ansible=true
 else
-  ansible_correct_version_installed=`${ANSIBLE_BINARY} --version 2>&1 | cut -c 9- | grep "${ANSIBLE_MINIMUM_VERSION}"`
+  ansible_correct_version_installed=`${ANSIBLE_BINARY} --version 2>&1 | cut -d ' ' -f 2 | grep "${ANSIBLE_MINIMUM_VERSION}"`
 
   if [ "${ansible_correct_version_installed}" ]; then
     should_install_ansible=false
@@ -97,10 +104,8 @@ fi
 if [ "${should_install_ansible}" == true ]; then
   echo "Ansible installation"
   echo "--------------------"
-  export CFLAGS=-Qunused-arguments
-  export CPPFLAGS=-Qunused-arguments
-  sudo -E easy_install pip
-  sudo -E pip install git+https://github.com/ansible/ansible.git # We need at least ansible 1.6
+  sudo easy_install pip
+  sudo CFLAGS="-Wunused-command-line-argument-hard-error-in-future" pip install git+https://github.com/ansible/ansible.git@1.6.1 # We need at least 1.6
   echo ""
   echo ""
 fi

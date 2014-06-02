@@ -105,7 +105,7 @@ if [ "${should_install_ansible}" == true ]; then
   echo "Ansible installation"
   echo "--------------------"
   sudo easy_install pip
-  sudo CFLAGS="-Wunused-command-line-argument-hard-error-in-future" pip install git+https://github.com/ansible/ansible.git@1.6.1 # We need at least 1.6
+  sudo CFLAGS="-Wunused-command-line-argument-hard-error-in-future" pip install git+https://github.com/ansible/ansible.git@v1.6.2 # We need at least 1.6
   echo ""
   echo ""
 fi
